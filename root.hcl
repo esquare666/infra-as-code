@@ -28,6 +28,19 @@ locals {
   }
   region_short = lookup(local.region_short_names, local.region, local.region)
 
+  # Region subnets mapping (multiple subnets per region)
+  region_subnets = {
+    "australia-southeast1" = ["ause1"]
+    "australia-southeast2" = ["ause2"]
+    "us-central1"          = ["usc1"]
+    "us-east1"             = ["use1"]
+    "us-west1"             = ["usw1"]
+    "europe-west1"         = ["euw1"]
+    "asia-southeast1"      = ["asse1"]
+    "global"               = []
+  }
+  subnets = lookup(local.region_subnets, local.region, [])
+
   # All labels (merged)
   labels = {
     managed_by  = "atlantis"
@@ -82,7 +95,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.0.0"
+      version = ">= 6.0.0"
     }
   }
 }
