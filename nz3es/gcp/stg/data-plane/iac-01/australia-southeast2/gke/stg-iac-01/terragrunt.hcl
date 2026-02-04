@@ -69,7 +69,7 @@ inputs = {
   ]
 
   # Cluster config
-  kubernetes_version  = "1.33"
+  kubernetes_version  = "1.34"
   release_channel     = "REGULAR"
   labels              = include.root.locals.labels
   deletion_protection = false # Set to true for production
