@@ -3,8 +3,14 @@ include "root" {
   expose = true
 }
 
+locals {
+  _path_components = split("/", path_relative_to_include())
+  cluster_name     = local._path_components[length(local._path_components) - 1]
+  base_path        = "${get_repo_root()}/${include.root.locals.org}/${include.root.locals.provider}/${include.root.locals.environment}/${include.root.locals.plane}/${include.root.locals.project}"
+}
+
 dependency "network" {
-  config_path = "../../../global/network"
+  config_path = "${local.base_path}/global/network"
 
   mock_outputs = {
     network_self_link = "mock-network-self-link"
@@ -14,13 +20,17 @@ dependency "network" {
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
 }
 
-terraform {
-  source = "../../../../../../../../modules/gke-private-cluster"
+dependency "service_account" {
+  config_path = "${local.base_path}/global/iam/serviceaccounts/gke-cluster"
+
+  mock_outputs = {
+    email = "mock-gke-sa@project.iam.gserviceaccount.com"
+  }
+  mock_outputs_allowed_terraform_commands = ["validate", "plan"]
 }
 
-locals {
-  _path_components = split("/", path_relative_to_include())
-  cluster_name     = local._path_components[length(local._path_components) - 1]
+terraform {
+  source = "${get_repo_root()}/modules/gke-private-cluster"
 }
 
 inputs = {
@@ -35,7 +45,7 @@ inputs = {
   ip_range_services = "gke-services"
 
   # Private cluster
-  enable_private_nodes    = false
+  enable_private_nodes    = true
   enable_private_endpoint = false
 
   master_authorized_networks = []
@@ -45,12 +55,17 @@ inputs = {
   initial_node_count       = 0
 
   cluster_autoscaling = {
-    enabled                      = false
-    autoscaling_profile          = "OPTIMIZE_UTILIZATION"
+    enabled             = false
+    autoscaling_profile = "OPTIMIZE_UTILIZATION"
+    # min_cpu_cores                = 0
+    # max_cpu_cores                = 16
+    # min_memory_gb                = 0
+    # max_memory_gb                = 64
     gpu_resources                = []
     auto_repair                  = true
     auto_upgrade                 = true
     enable_default_compute_class = true
+    # service_account              = dependency.service_account.outputs.email
   }
 
   node_pools = [
@@ -58,8 +73,8 @@ inputs = {
       name               = "nz3es-pool"
       machine_type       = "e2-medium"
       initial_node_count = 1
-      min_count          = 0
-      max_count          = 1
+      min_count          = 1
+      max_count          = 3
       disk_size_gb       = 100
       disk_type          = "pd-standard"
       image_type         = "COS_CONTAINERD"
@@ -77,6 +92,7 @@ inputs = {
 
   # Service account
   create_service_account = false
+  service_account        = dependency.service_account.outputs.email
 
   # Addons
   dns_cache                            = true

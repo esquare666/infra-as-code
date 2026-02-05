@@ -7,8 +7,10 @@ locals {
   project_id = get_env("GCP_PROJECT", "default-project")
   gcp_region = get_env("GCP_REGION", "australia-southeast2")
 
-  # Parse path: nz3es/gcp/{env}/{plane}/{project}/{region}/{component}
+  # Parse path: {org}/{provider}/{env}/{plane}/{project}/{region}/{component}
   _path_components = split("/", path_relative_to_include())
+  org              = local._path_components[0]
+  provider         = local._path_components[1]
   environment      = local._path_components[2]
   plane            = local._path_components[3]
   project          = local._path_components[4]

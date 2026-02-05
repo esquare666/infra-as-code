@@ -192,6 +192,12 @@ variable "create_service_account" {
   default     = true
 }
 
+variable "service_account" {
+  description = "Service account email to use for nodes (when create_service_account is false)"
+  type        = string
+  default     = ""
+}
+
 variable "cluster_autoscaling" {
   description = "Cluster autoscaling configuration (NAP - Node Auto-Provisioning)"
   type = object({
@@ -217,6 +223,7 @@ variable "cluster_autoscaling" {
     enable_secure_boot           = optional(bool, false)
     enable_integrity_monitoring  = optional(bool, true)
     enable_default_compute_class = optional(bool, false)
+    service_account              = optional(string)
   })
   default = {
     enabled             = false

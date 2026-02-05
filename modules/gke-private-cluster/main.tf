@@ -50,4 +50,5 @@ module "gke" {
 
   # Service account
   create_service_account = var.create_service_account
+  service_account        = var.service_account
 }

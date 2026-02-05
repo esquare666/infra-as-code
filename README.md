@@ -173,6 +173,7 @@ terragrunt run-all apply
     #!/bin/bash
 
     # Define variables
+    # assign "roles/owner" or else assign below roles
     PROJECT_ID="iac-01"
     MEMBER="serviceAccount:nz3es-automation-sa@iac-01.iam.gserviceaccount.com"
     ROLES=(
@@ -185,6 +186,9 @@ terragrunt run-all apply
         "roles/networkconnectivity.admin"
         "roles/secretmanager.admin"
         "roles/container.clusterAdmin"
+        "roles/container.admin"
+        "roles/iam.serviceAccountAdmin"
+        "roles/resourcemanager.projectIamAdmin"
     )
 
     # Loop through each role and assign it
@@ -194,13 +198,9 @@ terragrunt run-all apply
     done
     ```
 
-  - Additional Roles if required
+## connect cluster
 
-    ```text
-        --role="roles/compute.instanceAdmin.v1"
-        --role="roles/container.admin"
-        --role="roles/bigquery.admin"
-    ```
+gcloud container clusters get-credentials stg-iac-01 --region australia-southeast2 --project iac-01
 
 ## Troubleshooting
 
@@ -208,8 +208,6 @@ See [backup/troubleshooting.md](backup/troubleshooting.md) for common issues and
 
 gcloud container node-pools list --cluster=stg-iac-01 --region=australia-southeast2 --project=iac-01
 
-cd nz3es/gcp/stg/data-plane/iac-01/australia-southeast2/gke/stg-iac-01
+find $HOME/git/infra-as-code -type d -name ".terragrunt-cache" -exec rm -rf {} + 2>/dev/null; echo "Done - removed all .terragrunt-cache directories"
 
-terragrunt import 'module.gke.google_container_node_pool.pools["default-pool"]' projects/iac-01/locations/australia-southeast2/clusters/stg-iac-01/nodePools/default-pool
-
-gcloud container clusters get-credentials stg-iac-01 --region australia-southeast2 --project iac-01
+find $HOME/git/infra-as-code -type f -name ".terraform.lock.hcl" -exec rm -rf {} + 2>/dev/null; echo "Done - removed all .terraform.lock.hcl files"
