@@ -82,7 +82,6 @@ inputs = {
     auto_repair                  = true
     auto_upgrade                 = true
     enable_default_compute_class = true
-    service_account              = dependency.service_account.outputs.email
   }
 
   node_pools = [
@@ -101,8 +100,8 @@ inputs = {
     {
       name               = "nz3es-spot-pool"
       machine_type       = "e2-medium"
-      initial_node_count = 0
-      min_count          = 0
+      initial_node_count = 1
+      min_count          = 1
       max_count          = 2
       disk_size_gb       = 100
       disk_type          = "pd-standard"

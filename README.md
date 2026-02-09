@@ -271,14 +271,28 @@ terragrunt run-all apply
 
 gcloud container clusters get-credentials stg-iac-01 --region australia-southeast2 --project iac-01
 
+## Billing Model
+
+| Pool Type | Compute Class | Billing Model | VM Type | Cost |
+| --------- | ------------- | ------------- | ------- | ---- |
+| Manual (`nz3es-pool`) | N/A | Node-based (pay for full VM) | On-demand | Highest |
+| NAP | `autopilot` | Pod-based (pay per pod requests) | On-demand | Medium |
+| NAP | `autopilot-spot` | Pod-based (pay per pod requests) | Spot (preemptible) | Lowest (~60-91% cheaper) |
+
+- **Node-based billing**: You pay for the entire VM regardless of pod utilisation
+- **Pod-based billing**: You only pay for the CPU/memory requested by pods ([docs](https://cloud.google.com/kubernetes-engine/docs/concepts/about-autopilot-mode-standard-clusters))
+- **Spot**: GCP can reclaim the VM at any time with ~30s notice — best for fault-tolerant workloads
+
 ## Enable compute class
 
 ### Namespace level
 
 ```bash
-# Set default compute class at namespace level (must be a label, not annotation)
-# Pods in this namespace will automatically get nodeSelector injected — no workload-level changes needed
+# autopilot (on-demand, pod-based billing)
 kubectl label namespace <namespace> cloud.google.com/default-compute-class=autopilot --overwrite
+
+# autopilot-spot (spot, pod-based billing — cheapest option)
+kubectl label namespace <namespace> cloud.google.com/default-compute-class=autopilot-spot --overwrite
 
 # Verify namespace label
 kubectl get namespace <namespace> -o jsonpath='{.metadata.labels}'
@@ -290,10 +304,23 @@ kubectl -n <namespace> get pods <podname> -o yaml | grep -A1 nodeSelector
 kubectl label namespace <namespace> cloud.google.com/default-compute-class-
 ```
 
-### workload level
+Must be a namespace **label**, not annotation. Pods in the namespace will automatically get `nodeSelector` injected — no workload-level changes needed.
 
-cat nginx_deploy.yml | yq .spec.template.spec.nodeSelector
-cloud.google.com/compute-class: "autopilot"
+### Workload level
+
+If not using namespace-level default, add `nodeSelector` to the pod spec:
+
+```yaml
+# autopilot (on-demand)
+nodeSelector:
+  cloud.google.com/compute-class: "autopilot"
+
+# autopilot-spot (spot — pods can be evicted anytime)
+nodeSelector:
+  cloud.google.com/compute-class: "autopilot-spot"
+```
+
+With `autopilot-spot`, no toleration is needed — GKE handles it automatically. Manual spot pools (`nz3es-spot-pool`) are not required when using the `autopilot-spot` compute class.
 
 ## Troubleshooting
 

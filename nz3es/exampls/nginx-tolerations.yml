@@ -32,3 +32,9 @@ spec:
       nodeSelector:
         node_pool: "nz3es-spot-pool"
         nz3es/dedicated: "true"
+# k -n raja get events --sort-by=.lastTimestamp
+# LAST SEEN   TYPE      REASON              OBJECT                                    MESSAGE
+# 2m41s       Warning   FailedScheduling    pod/nginx-tolerations-5b557fd54c-c9gsx    0/5 nodes are available: 1 node(s) had untolerated taint(s), 4 node(s) didn't match Pod's node affinity/selector. no new claims to deallocate, preemption: 0/5 nodes are available: 5 Preemption is not helpful for scheduling.
+# 2m41s       Normal    NotTriggerScaleUp   pod/nginx-tolerations-5b557fd54c-c9gsx    Pod didn't trigger scale-up: 9 max cluster cpu limit reached, 3 max cluster cpu, memory limit reached
+# 2m41s       Normal    SuccessfulCreate    replicaset/nginx-tolerations-5b557fd54c   Created pod: nginx-tolerations-5b557fd54c-c9gsx
+# 2m41s       Normal    ScalingReplicaSet   deployment/nginx-tolerations              Scaled up replica set nginx-tolerations-5b557fd54c from 0 to 1
