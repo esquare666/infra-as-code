@@ -1,19 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: nginx-autopilot
+  namespace: nginx-autopilot
 spec:
   selector:
     matchLabels:
-      app: nginx
+      app: nginx-autopilot
   replicas: 1
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx-autopilot
     spec:
       containers:
-        - name: nginx
+        - name: nginx-autopilot
           image: nginx:1.14.2
           ports:
             - containerPort: 80

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-autopilot-spot
-  namespace: nginx-autopilot-spot
+  name: nginx
+  namespace: nginx
 spec:
   selector:
     matchLabels:
-      app: nginx-autopilot-spot
+      app: nginx
   replicas: 1
   template:
     metadata:
       labels:
-        app: nginx-autopilot-spot
+        app: nginx
     spec:
       containers:
-        - name: nginx-autopilot-spot
+        - name: nginx
           image: nginx:1.14.2
           ports:
             - containerPort: 80
@@ -25,5 +25,3 @@ spec:
             requests:
               cpu: "250m"
               memory: "64Mi"
-      nodeSelector: # This is not required if the label has added to namespace level
-        cloud.google.com/compute-class: "autopilot-spot"
