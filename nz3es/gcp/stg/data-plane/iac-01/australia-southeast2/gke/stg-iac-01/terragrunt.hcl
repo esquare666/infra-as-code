@@ -39,11 +39,9 @@ terraform {
   after_hook "patch_compute_class_sa" {
     commands = ["init"]
     execute = ["bash", "-c", <<-EOC
+        # Find cluster.tf: search subdirectories first, fall back to current directory
         CLUSTER_TF=$(find . -name "cluster.tf" -path "*/private-cluster/*" | head -1)
-        # If not found via path, check current directory (pwd may already be private-cluster)
-        if [ -z "$CLUSTER_TF" ] && [ -f "cluster.tf" ]; then
-          CLUSTER_TF="./cluster.tf"
-        fi
+        CLUSTER_TF="${CLUSTER_TF : -$ ([-f cluster.tf] && echo./ cluster.tf)}"
 
         if [ -z "$CLUSTER_TF" ]; then
           echo "No cluster.tf found to patch"
