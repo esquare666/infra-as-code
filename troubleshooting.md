@@ -28,25 +28,42 @@ find $HOME/git/infra-as-code -type f -name ".terraform.lock.hcl" -exec rm -rf {}
 
 ```
 
-###
+### GKE cluster inspection
 
 ```bash
-
 gcloud container clusters list --project=iac-01
-gcloud container clusters describe stg-iac-01 --project=iac-01
+gcloud container clusters describe stg-iac-01-ause2 --project=iac-01
 
-gcloud container node-pools list --cluster=stg-iac-01 --region=australia-southeast2 --project=iac-01
+gcloud container node-pools list --cluster=stg-iac-01-ause2 --region=australia-southeast2 --project=iac-01
 
-gcloud container node-pools describe nz3es-spot-pool --cluster=stg-iac-01 --region=australia-southeast2 --project=iac-01 | yq .config.labels
-# cluster_name: stg-iac-01
+gcloud container node-pools describe nz3es-spot-pool --cluster=stg-iac-01-ause2 --region=australia-southeast2 --project=iac-01 | yq .config.labels
+# cluster_name: stg-iac-01-ause2
 # node_pool: nz3es-spot-pool
 # nz3es/dedicated: 'true'
 ```
 
+### Check GKE operation status
+
+Operation IDs appear in:
+
+- `terragrunt apply` output (e.g. `operation-1234567890123-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+- `gcloud container operations list` output
+
+```bash
+# List recent operations
+gcloud container operations list --region australia-southeast2 --project iac-01
+
+# Describe a specific operation
+gcloud container operations describe <operation_id> --region australia-southeast2 --project iac-01 | grep status
+# status: DONE
+```
+
 ### k8s
 
+```bash
 k get events --sort-by=.lastTimestamp
 k get events -w --field-selector involvedObject.kind=Pod
+```
 
 ### Re-initialize with upgrade
 

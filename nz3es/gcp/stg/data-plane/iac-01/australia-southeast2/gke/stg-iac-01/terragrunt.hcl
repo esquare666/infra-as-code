@@ -3,10 +3,12 @@ include "root" {
   expose = true
 }
 
+include "gke" {
+  path = "${get_repo_root()}/modules/gke-private-cluster/terragrunt.hcl"
+}
+
 locals {
-  _path_components = split("/", path_relative_to_include())
-  # cluster_name     = local._path_components[length(local._path_components) - 1]
-  cluster_name = "${local._path_components[length(local._path_components) - 1]}-${include.root.locals.region_short}"
+  cluster_name = "${basename(get_terragrunt_dir())}-${include.root.locals.region_short}"
   base_path    = "${get_repo_root()}/${include.root.locals.org}/${include.root.locals.provider}/${include.root.locals.environment}/${include.root.locals.plane}/${include.root.locals.project}"
 }
 
@@ -30,49 +32,56 @@ dependency "service_account" {
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
 }
 
-terraform {
-  source = "${get_repo_root()}/modules/gke-private-cluster"
+# ---------------------------------------------------------------------------
+# Option A: after_hook
+# Patches upstream cluster.tf so the autoprovisioningNodePoolDefaults block
+# (which carries the custom SA) is created when enable_default_compute_class
+# is true, even if NAP (cluster_autoscaling.enabled) is false.
+# ---------------------------------------------------------------------------
+# generate "patch_compute_class" {
+#   path      = "patch_compute_class.sh"
+#   if_exists = "overwrite_terragrunt"
+#   contents  = <<-EOF
+#     #!/usr/bin/env bash
+#     set -euo pipefail
 
-  # ---------------------------------------------------------------------------
-  # Option A: after_hook (recommended)
-  # Patches upstream cluster.tf so SA is managed natively in the cluster resource.
-  # ---------------------------------------------------------------------------
-  # after_hook "patch_compute_class_sa" {
-  #   commands = ["init"]
-  #   execute = ["bash", "-c", <<-EOC
-  #       # Find cluster.tf: search subdirectories first, fall back to current directory
-  #       CLUSTER_TF=$(find . -name "cluster.tf" -path "*/private-cluster/*" | head -1)
-  #       [ -z "$$CLUSTER_TF" ] && [ -f cluster.tf ] && CLUSTER_TF=./cluster.tf
+#     echo "Running patch_compute_class.sh in $(pwd)"
+#     if [[ "$(pwd)" != */private-cluster ]] || [ ! -f cluster.tf ]; then
+#       echo "Not in private-cluster directory or no cluster.tf found, skipping"
+#       exit 0
+#     fi
 
-  #       if [ -z "$$CLUSTER_TF" ]; then
-  #         echo "No cluster.tf found to patch"
-  #         exit 0
-  #       fi
+#     if grep -q 'enable_default_compute_class.*\[1\]' cluster.tf; then
+#       echo "Already patched"
+#       exit 0
+#     fi
 
-  #       if grep -q 'enable_default_compute_class.*\[1\]' "$CLUSTER_TF"; then
-  #         echo "Already patched"
-  #         exit 0
-  #       fi
+#     echo "Patching cluster.tf"
+#     sed -i.bak 's#for_each = var\.cluster_autoscaling\.enabled ? \[1\] : \[\]#for_each = var.cluster_autoscaling.enabled || lookup(var.cluster_autoscaling, "enable_default_compute_class", false) ? [1] : []#' cluster.tf
 
-  #       echo "Patching: $CLUSTER_TF"
-  #       sed -i.bak 's#for_each = var\.cluster_autoscaling\.enabled ? \[1\] : \[\]#for_each = var.cluster_autoscaling.enabled || lookup(var.cluster_autoscaling, "enable_default_compute_class", false) ? [1] : []#' "$CLUSTER_TF"
+#     if grep -q 'enable_default_compute_class.*\[1\]' cluster.tf; then
+#       rm -f cluster.tf.bak
+#       echo "Patch applied successfully"
+#     else
+#       echo "Patch failed"
+#       exit 1
+#     fi
+#   EOF
+# }
 
-  #       if grep -q 'enable_default_compute_class.*\[1\]' "$CLUSTER_TF"; then
-  #         rm -f "$CLUSTER_TF.bak"
-  #         echo "Patch applied successfully"
-  #       else
-  #         echo "Patch failed"
-  #         exit 1
-  #       fi
-  #     EOC
-  #   ]
-  # }
-}
+# terraform {
+#   after_hook "patch_compute_class_sa" {
+#     commands = ["init"]
+#     execute  = ["bash", "patch_compute_class.sh"]
+#   }
+# }
+
 
 # ---------------------------------------------------------------------------
-# Option B: generate block (alternative)
-# Sets SA via REST API after cluster creation. Uncomment to use instead of
-# Option A (comment out the after_hook above if using this).
+# Option B: generate block (active)
+# Sets SA via REST API after cluster creation.
+# With tfr:// source, use var.name instead of module.gke.name since the
+# upstream module runs as root module (no wrapper).
 # ---------------------------------------------------------------------------
 generate "compute_class_sa" {
   path      = "compute_class_sa.tf"
@@ -85,7 +94,7 @@ generate "compute_class_sa" {
 
       triggers = {
         service_account = var.service_account
-        cluster_name    = module.gke.name
+        cluster_name    = var.name
       }
 
       provisioner "local-exec" {
@@ -95,13 +104,13 @@ generate "compute_class_sa" {
             -H "Authorization: Bearer $TOKEN" \
             -H "Content-Type: application/json" \
             -d '{"update":{"desiredClusterAutoscaling":{"autoprovisioningNodePoolDefaults":{"serviceAccount":"$${var.service_account}","oauthScopes":["https://www.googleapis.com/auth/cloud-platform"]}}}}' \
-            "https://container.googleapis.com/v1/projects/$${var.project_id}/locations/$${var.region}/clusters/$${module.gke.name}" \
+            "https://container.googleapis.com/v1/projects/$${var.project_id}/locations/$${var.region}/clusters/$${var.name}" \
             && echo "SA patched successfully" \
             || (echo "Failed to patch SA" && exit 1)
         EOT
       }
 
-      depends_on = [module.gke]
+      depends_on = [google_container_cluster.primary]
     }
   EOF
 }
@@ -145,12 +154,8 @@ inputs = {
   initial_node_count       = 0
 
   cluster_autoscaling = {
-    enabled             = false
-    autoscaling_profile = "OPTIMIZE_UTILIZATION"
-    # min_cpu_cores                = 0
-    # max_cpu_cores                = 16
-    # min_memory_gb                = 0
-    # max_memory_gb                = 64
+    enabled                      = false
+    autoscaling_profile          = "OPTIMIZE_UTILIZATION"
     gpu_resources                = []
     auto_repair                  = true
     auto_upgrade                 = true
@@ -159,9 +164,8 @@ inputs = {
 
   node_pools = [
     {
-      name         = "nz3es-pool"
-      machine_type = "e2-medium"
-      # upstream module defaults initial_node_count to 0
+      name               = "nz3es-pool"
+      machine_type       = "e2-medium"
       initial_node_count = 0
       total_min_count    = 0
       total_max_count    = 6
@@ -209,11 +213,11 @@ inputs = {
   }
 
   # Cluster config
-  kubernetes_version  = "1.34"
-  release_channel     = "REGULAR"
-  labels              = include.root.locals.labels
-  deletion_protection = false # Set to true for production
-  datapath_provider   = "ADVANCED_DATAPATH"
+  kubernetes_version      = "1.34"
+  release_channel         = "REGULAR"
+  cluster_resource_labels = include.root.locals.labels
+  deletion_protection     = false # Set to true for production
+  datapath_provider       = "ADVANCED_DATAPATH"
 
   # Security
   security_posture_mode                  = "BASIC"

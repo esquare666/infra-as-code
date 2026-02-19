@@ -45,7 +45,7 @@ locals {
 
   # All labels (merged)
   labels = {
-    managed_by  = "atlantis"
+    # managed_by  = "atlantis"
     org         = "nz3es"
     environment = local.environment
     plane       = local.plane
@@ -63,7 +63,7 @@ remote_state {
   }
   config = {
     bucket = "nz3es-tf-state-iac"
-    prefix = "tfstate/${path_relative_to_include()}"
+    prefix = "infra-as-code/${path_relative_to_include()}"
   }
 }
 
@@ -88,24 +88,17 @@ remote_state {
 # EOF
 # }
 
-# Generate a provider.tf in each module folder with provider config derived from env
-generate "provider" {
-  path      = "provider.tf"
-  if_exists = "overwrite"
-  contents  = <<EOF
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 6.0.0"
-    }
-  }
-}
-
-provider "google" {
-  project = "${local.project_id}"
-  region  = "${local.region}"
-}
-
-EOF
-}
+# Provider config generation (commented out — upstream modules via tfr://
+# have their own versions.tf. Provider project/region set via env vars:
+# GOOGLE_PROJECT, GOOGLE_REGION, or gcloud application-default credentials).
+# generate "provider" {
+#   path      = "provider.tf"
+#   if_exists = "skip"
+#   contents  = <<EOF
+# provider "google" {
+#   project = "${local.project_id}"
+#   region  = "${local.region}"
+# }
+#
+# EOF
+# }

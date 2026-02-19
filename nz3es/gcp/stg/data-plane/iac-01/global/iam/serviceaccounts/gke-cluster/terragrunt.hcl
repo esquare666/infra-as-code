@@ -3,24 +3,25 @@ include "root" {
   expose = true
 }
 
-terraform {
-  source = "${get_repo_root()}/modules/service-account"
+include "service_account" {
+  path = "${get_repo_root()}/modules/service-account/terragrunt.hcl"
 }
 
 locals {
-  _path_components = split("/", path_relative_to_include())
-  sa_name          = local._path_components[length(local._path_components) - 1]
+  sa_name = basename(get_terragrunt_dir())
 }
 
 inputs = {
   project_id   = include.root.locals.project_id
-  name         = local.sa_name
+  names        = [local.sa_name]
   display_name = "GKE Node Service Account - ${local.sa_name}"
-  roles = [
-    "roles/logging.logWriter",
-    "roles/monitoring.metricWriter",
-    "roles/monitoring.viewer",
-    "roles/stackdriver.resourceMetadata.writer",
-    "roles/artifactregistry.reader",
+  project_roles = [
+    "${include.root.locals.project_id}=>roles/logging.logWriter",
+    "${include.root.locals.project_id}=>roles/monitoring.metricWriter",
+    "${include.root.locals.project_id}=>roles/monitoring.viewer",
+    "${include.root.locals.project_id}=>roles/stackdriver.resourceMetadata.writer",
+    "${include.root.locals.project_id}=>roles/artifactregistry.reader",
+    # Cross-project: Artifact Registry on iac-02
+    # "iac-02=>roles/artifactregistry.reader",
   ]
 }

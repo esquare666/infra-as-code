@@ -2,7 +2,14 @@
 
 Upstream module [v43.0](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine) gates `auto_provisioning_defaults` (SA, oauth scopes) behind `enabled=true`. When `enabled=false` + `enable_default_compute_class=true`, autopilot nodes fall back to the default compute SA.
 
-## Option A: `after_hook` + `sed` patch (Recommended)
+## Current Config
+
+- NAP disabled (`cluster_autoscaling.enabled = false`) — prevents NAP from racing manual pools for unschedulable pods
+- `enable_default_compute_class = true` — creates "autopilot" ComputeClass via `defaultComputeClassConfig`, which works independently of NAP
+- Manual pools (`nz3es-pool`, `nz3es-spot-pool`) → node-based billing
+- Compute-class pods → autopilot NAP nodes created on demand → pod-based billing
+
+## Option A: `after_hook` + `sed` patch (commented out)
 
 Patches upstream `cluster.tf` after `terraform init` to include `enable_default_compute_class` in the `for_each` condition. The hook uses `commands = ["init"]` so it runs after the module is downloaded. It's idempotent — skips patching if the file already contains the fix.
 
@@ -10,7 +17,7 @@ Patches upstream `cluster.tf` after `terraform init` to include `enable_default_
 - **Cons:** Re-patches after every init, fragile if upstream changes the `for_each` line format
 - **Note:** Hook runs inside `.terragrunt-cache/` — uses `find` with fallback to locate `cluster.tf`
 
-## Option B: `generate` + `null_resource` REST API
+## Option B: `generate` + `null_resource` REST API (active)
 
 Generates a `null_resource` that sets the SA via GKE REST API (`PUT` with `ClusterUpdate`) after cluster creation. Uses `curl -sf` (silent + fail-on-error) instead of checking `%{http_code}`, which conflicts with HCL template syntax in `generate` blocks.
 

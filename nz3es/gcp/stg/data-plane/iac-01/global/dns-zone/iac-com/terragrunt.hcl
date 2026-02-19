@@ -3,34 +3,34 @@ include "root" {
   expose = true
 }
 
-terraform {
-  source = "../../../../../../../../modules/dns-zone"
+include "dns_zone" {
+  path = "${get_repo_root()}/modules/dns-zone/terragrunt.hcl"
 }
 
 locals {
-  # Get zone name from folder name
-  _path_components = split("/", path_relative_to_include())
-  zone_name        = local._path_components[length(local._path_components) - 1]
-  dns_name         = "${replace(local.zone_name, "-", ".")}."
+  zone_name = basename(get_terragrunt_dir())
+  domain    = "${replace(local.zone_name, "-", ".")}."
 }
 
 inputs = {
   project_id  = include.root.locals.project_id
   name        = local.zone_name
-  dns_name    = local.dns_name
+  domain      = local.domain
   description = "Public DNS zone for ${include.root.locals.environment}"
-  visibility  = "public"
+  type        = "public"
 
-  records = {
-    # "app" = {
+  recordsets = [
+    # {
+    #   name    = "app"
     #   type    = "A"
     #   ttl     = 300
-    #   rrdatas = ["10.2.0.10"]
+    #   records = ["10.2.0.10"]
     # },
-    # "db" = {
+    # {
+    #   name    = "db"
     #   type    = "A"
     #   ttl     = 300
-    #   rrdatas = ["10.2.0.20"]
+    #   records = ["10.2.0.20"]
     # },
-  }
+  ]
 }

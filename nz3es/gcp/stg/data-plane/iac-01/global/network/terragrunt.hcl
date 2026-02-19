@@ -3,26 +3,31 @@ include "root" {
   expose = true
 }
 
-terraform {
-  source = "../../../../../../../modules/vpc"
+include "network" {
+  path = "${get_repo_root()}/modules/network/terragrunt.hcl"
 }
 
 inputs = {
-  project_id = include.root.locals.project_id
-  name       = format("%s-%s", include.root.locals.environment, include.root.locals.project)
+  project_id   = include.root.locals.project_id
+  network_name = format("%s-%s", include.root.locals.environment, include.root.locals.project)
 
-  subnets = {
-    "ause2" = {
-      region = "australia-southeast2"
-      cidr   = "10.1.0.0/24"
-      secondary_ip_ranges = [
-        { range_name = "gke-pods", ip_cidr_range = "10.100.0.0/16" },
-        { range_name = "gke-services", ip_cidr_range = "10.200.0.0/20" },
-      ]
+  subnets = [
+    {
+      subnet_name   = "ause2"
+      subnet_ip     = "10.1.0.0/24"
+      subnet_region = "australia-southeast2"
     },
-    "ause1" = {
-      region = "australia-southeast1"
-      cidr   = "10.2.0.0/24"
-    }
+    {
+      subnet_name   = "ause1"
+      subnet_ip     = "10.2.0.0/24"
+      subnet_region = "australia-southeast1"
+    },
+  ]
+
+  secondary_ranges = {
+    "ause2" = [
+      { range_name = "gke-pods", ip_cidr_range = "10.100.0.0/16" },
+      { range_name = "gke-services", ip_cidr_range = "10.200.0.0/20" },
+    ]
   }
 }
