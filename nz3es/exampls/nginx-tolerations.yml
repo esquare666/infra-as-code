@@ -1,7 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-tolerations
+  labels:
+    environment: poc
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-tolerations
+  namespace: nginx-tolerations
 spec:
   selector:
     matchLabels:

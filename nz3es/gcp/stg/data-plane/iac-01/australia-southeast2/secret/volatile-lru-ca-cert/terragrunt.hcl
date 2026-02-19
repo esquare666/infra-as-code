@@ -3,27 +3,37 @@ include "root" {
   expose = true
 }
 
+include "secret_manager" {
+  path = "${get_repo_root()}/modules/secret-manager/terragrunt.hcl"
+}
+
 dependency "valkey" {
   config_path = "../../memorystore/volatile-lru"
 
   mock_outputs = {
-    ca_cert = "mock-ca-cert"
+    valkey_cluster = {
+      managed_server_ca = [
+        {
+          ca_certs = [
+            {
+              certificates = ["mock-ca-cert"]
+            }
+          ]
+        }
+      ]
+    }
   }
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
 }
 
-terraform {
-  source = "../../../../../../../../modules/secret-manager"
-}
-
 locals {
-  _path_components = split("/", path_relative_to_include())
-  secret_name      = local._path_components[length(local._path_components) - 1]
+  secret_name = "${basename(get_terragrunt_dir())}-${include.root.locals.region_short}"
 }
 
 inputs = {
   project_id  = include.root.locals.project_id
-  secret_id   = local.secret_name
-  secret_data = dependency.valkey.outputs.ca_cert
-  labels      = include.root.locals.labels
+  name        = local.secret_name
+  secret_data = join("\n", dependency.valkey.outputs.valkey_cluster.managed_server_ca[0].ca_certs[0].certificates)
+  # secret_data = "mock-ca-cert"
+  labels = include.root.locals.labels
 }

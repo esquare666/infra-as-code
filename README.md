@@ -269,7 +269,7 @@ terragrunt run-all apply
 
 ## connect cluster
 
-gcloud container clusters get-credentials stg-iac-01 --region australia-southeast2 --project iac-01
+gcloud container clusters get-credentials stg-iac-01-ause2 --region australia-southeast2 --project iac-01
 
 ## Billing Model
 

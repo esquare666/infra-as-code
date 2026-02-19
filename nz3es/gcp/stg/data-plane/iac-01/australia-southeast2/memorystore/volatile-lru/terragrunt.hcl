@@ -3,6 +3,10 @@ include "root" {
   expose = true
 }
 
+include "memorystore_valkey" {
+  path = "${get_repo_root()}/modules/memorystore-valkey/terragrunt.hcl"
+}
+
 dependency "scp" {
   config_path = "../../service-connection-policy/valkey-psc"
 
@@ -12,14 +16,8 @@ dependency "scp" {
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
 }
 
-terraform {
-  source = "../../../../../../../../modules/memorystore-valkey"
-}
-
 locals {
-  # Get instance name from folder name
-  _path_components = split("/", path_relative_to_include())
-  instance_name    = local._path_components[length(local._path_components) - 1]
+  instance_name = "${basename(get_terragrunt_dir())}-${include.root.locals.region_short}"
 }
 
 inputs = {
@@ -36,7 +34,7 @@ inputs = {
   labels                  = include.root.locals.labels
 
   engine_configs = {
-    "maxmemory-policy" = local.instance_name
+    "maxmemory-policy" = basename(get_terragrunt_dir())
   }
 
   deletion_protection_enabled = false # Set to true for production
