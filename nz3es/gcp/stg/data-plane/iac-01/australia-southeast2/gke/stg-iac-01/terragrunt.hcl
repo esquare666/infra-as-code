@@ -110,7 +110,7 @@ generate "compute_class_sa" {
         EOT
       }
 
-      depends_on = [google_container_cluster.primary]
+      depends_on = [google_container_cluster.primary, google_container_node_pool.pools]
     }
   EOF
 }
