@@ -4,7 +4,7 @@ include "root" {
 }
 
 include "gke" {
-  path = "${get_repo_root()}/modules/gke-private-cluster/terragrunt.hcl"
+  path = "${get_repo_root()}/modules/gcp/gke-private-cluster/terragrunt.hcl"
 }
 
 locals {
