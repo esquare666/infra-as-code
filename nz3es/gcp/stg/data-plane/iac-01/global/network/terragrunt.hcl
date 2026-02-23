@@ -29,6 +29,7 @@ inputs = {
   secondary_ranges = {
     "ause2" = [
       { range_name = "gke-pods", ip_cidr_range = "10.100.0.0/16" },
+      { range_name = "gke-pods-2", ip_cidr_range = "10.101.0.0/16" },
       { range_name = "gke-services", ip_cidr_range = "10.200.0.0/20" },
     ]
   }

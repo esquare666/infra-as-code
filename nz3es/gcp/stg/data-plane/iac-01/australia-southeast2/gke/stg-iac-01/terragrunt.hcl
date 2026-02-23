@@ -33,32 +33,30 @@ dependency "service_account" {
 }
 
 # ---------------------------------------------------------------------------
-# Option A: after_hook
-# Patches upstream cluster.tf so the autoprovisioningNodePoolDefaults block
-# (which carries the custom SA) is created when enable_default_compute_class
-# is true, even if NAP (cluster_autoscaling.enabled) is false.
+# Option A1: after_hook + sed patch (inactive)
+# Patches upstream cluster.tf in-place via sed after init.
 # ---------------------------------------------------------------------------
-# generate "patch_compute_class" {
+# generate "patch_compute_class_sh" {
 #   path      = "patch_compute_class.sh"
 #   if_exists = "overwrite_terragrunt"
 #   contents  = <<-EOF
 #     #!/usr/bin/env bash
 #     set -euo pipefail
-
+#
 #     echo "Running patch_compute_class.sh in $(pwd)"
 #     if [[ "$(pwd)" != */private-cluster ]] || [ ! -f cluster.tf ]; then
 #       echo "Not in private-cluster directory or no cluster.tf found, skipping"
 #       exit 0
 #     fi
-
+#
 #     if grep -q 'enable_default_compute_class.*\[1\]' cluster.tf; then
 #       echo "Already patched"
 #       exit 0
 #     fi
-
+#
 #     echo "Patching cluster.tf"
 #     sed -i.bak 's#for_each = var\.cluster_autoscaling\.enabled ? \[1\] : \[\]#for_each = var.cluster_autoscaling.enabled || lookup(var.cluster_autoscaling, "enable_default_compute_class", false) ? [1] : []#' cluster.tf
-
+#
 #     if grep -q 'enable_default_compute_class.*\[1\]' cluster.tf; then
 #       rm -f cluster.tf.bak
 #       echo "Patch applied successfully"
@@ -68,7 +66,7 @@ dependency "service_account" {
 #     fi
 #   EOF
 # }
-
+#
 # terraform {
 #   after_hook "patch_compute_class_sa" {
 #     commands = ["init"]
@@ -76,44 +74,116 @@ dependency "service_account" {
 #   }
 # }
 
-
 # ---------------------------------------------------------------------------
-# Option B: generate block (active)
-# Sets SA via REST API after cluster creation.
-# With tfr:// source, use var.name instead of module.gke.name since the
-# upstream module runs as root module (no wrapper).
+# Option A2: generate override file (active)
+# Produces compute_class_override.tf alongside upstream cluster.tf.
+# Terraform automatically deep-merges any *_override.tf with the main config.
+# Only change vs upstream: auto_provisioning_defaults.for_each also fires
+# when enable_default_compute_class = true (even when NAP enabled = false).
 # ---------------------------------------------------------------------------
-generate "compute_class_sa" {
-  path      = "compute_class_sa.tf"
+generate "patch_compute_class" {
+  path      = "compute_class_override.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<-EOF
-    resource "null_resource" "compute_class_service_account" {
-      count = (!var.cluster_autoscaling.enabled &&
-        lookup(var.cluster_autoscaling, "enable_default_compute_class", false) &&
-        var.service_account != "") ? 1 : 0
+    resource "google_container_cluster" "primary" {
+      cluster_autoscaling {
+        enabled                       = var.cluster_autoscaling.enabled
+        default_compute_class_enabled = lookup(var.cluster_autoscaling, "enable_default_compute_class", false)
 
-      triggers = {
-        service_account = var.service_account
-        cluster_name    = var.name
+        dynamic "auto_provisioning_defaults" {
+          # FIX: also create this block when enable_default_compute_class = true
+          for_each = var.cluster_autoscaling.enabled || lookup(var.cluster_autoscaling, "enable_default_compute_class", false) ? [1] : []
+
+          content {
+            service_account   = local.service_account
+            oauth_scopes      = local.node_pools_oauth_scopes["all"]
+            boot_disk_kms_key = var.boot_disk_kms_key
+
+            management {
+              auto_repair  = lookup(var.cluster_autoscaling, "auto_repair", true)
+              auto_upgrade = lookup(var.cluster_autoscaling, "auto_upgrade", true)
+            }
+
+            disk_size = lookup(var.cluster_autoscaling, "disk_size", 100)
+            disk_type = lookup(var.cluster_autoscaling, "disk_type", "pd-standard")
+
+            upgrade_settings {
+              strategy        = lookup(var.cluster_autoscaling, "strategy", "SURGE")
+              max_surge       = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_surge", 0) : null
+              max_unavailable = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "SURGE" ? lookup(var.cluster_autoscaling, "max_unavailable", 0) : null
+
+              dynamic "blue_green_settings" {
+                for_each = lookup(var.cluster_autoscaling, "strategy", "SURGE") == "BLUE_GREEN" ? [1] : []
+                content {
+                  node_pool_soak_duration = lookup(var.cluster_autoscaling, "node_pool_soak_duration", null)
+                  standard_rollout_policy {
+                    batch_soak_duration = lookup(var.cluster_autoscaling, "batch_soak_duration", null)
+                    batch_percentage    = lookup(var.cluster_autoscaling, "batch_percentage", null)
+                    batch_node_count    = lookup(var.cluster_autoscaling, "batch_node_count", null)
+                  }
+                }
+              }
+            }
+
+            shielded_instance_config {
+              enable_secure_boot          = lookup(var.cluster_autoscaling, "enable_secure_boot", false)
+              enable_integrity_monitoring = lookup(var.cluster_autoscaling, "enable_integrity_monitoring", true)
+            }
+
+            image_type = lookup(var.cluster_autoscaling, "image_type", "COS_CONTAINERD")
+          }
+        }
+
+        autoscaling_profile = var.cluster_autoscaling.autoscaling_profile != null ? var.cluster_autoscaling.autoscaling_profile : "BALANCED"
+
+        dynamic "resource_limits" {
+          for_each = local.autoscaling_resource_limits
+          content {
+            resource_type = resource_limits.value["resource_type"]
+            minimum       = resource_limits.value["minimum"]
+            maximum       = resource_limits.value["maximum"]
+          }
+        }
       }
-
-      provisioner "local-exec" {
-        command = <<-EOT
-          TOKEN=$(gcloud auth print-access-token) && \
-          curl -sf -X PUT \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"update":{"desiredClusterAutoscaling":{"autoprovisioningNodePoolDefaults":{"serviceAccount":"$${var.service_account}","oauthScopes":["https://www.googleapis.com/auth/cloud-platform"]}}}}' \
-            "https://container.googleapis.com/v1/projects/$${var.project_id}/locations/$${var.region}/clusters/$${var.name}" \
-            && echo "SA patched successfully" \
-            || (echo "Failed to patch SA" && exit 1)
-        EOT
-      }
-
-      depends_on = [google_container_cluster.primary, google_container_node_pool.pools]
     }
   EOF
 }
+
+# ---------------------------------------------------------------------------
+# Option B: null_resource REST API patch (inactive)
+# Sets SA via GCP REST API after cluster creation. Replaced by Option A.
+# ---------------------------------------------------------------------------
+# generate "compute_class_sa" {
+#   path      = "compute_class_sa.tf"
+#   if_exists = "overwrite_terragrunt"
+#   contents  = <<-EOF
+#     resource "null_resource" "compute_class_service_account" {
+#       count = (!var.cluster_autoscaling.enabled &&
+#         lookup(var.cluster_autoscaling, "enable_default_compute_class", false) &&
+#         var.service_account != "") ? 1 : 0
+#
+#       triggers = {
+#         service_account = var.service_account
+#         cluster_name    = var.name
+#       }
+#
+#       provisioner "local-exec" {
+#         command = <<-EOT
+#           TOKEN=$(gcloud auth print-access-token) && \
+#           curl -sf -X PUT \
+#             -H "Authorization: Bearer $TOKEN" \
+#             -H "Content-Type: application/json" \
+#             -d '{"update":{"desiredClusterAutoscaling":{"autoprovisioningNodePoolDefaults":{"serviceAccount":"$${var.service_account}","oauthScopes":["https://www.googleapis.com/auth/cloud-platform"]}}}}' \
+#             "https://container.googleapis.com/v1/projects/$${var.project_id}/locations/$${var.region}/clusters/$${var.name}" \
+#             && echo "SA patched successfully" \
+#             || (echo "Failed to patch SA" && exit 1)
+#         EOT
+#       }
+#
+#       depends_on = [google_container_cluster.primary, google_container_node_pool.pools]
+#     }
+#   EOF
+# }
 
 inputs = {
   project_id = include.root.locals.project_id
@@ -123,8 +193,9 @@ inputs = {
   subnetwork = include.root.locals.region_short
 
   # Secondary ranges
-  ip_range_pods     = "gke-pods"
-  ip_range_services = "gke-services"
+  ip_range_pods            = "gke-pods"
+  ip_range_services        = "gke-services"
+  additional_ip_range_pods = ["gke-pods-2"]
 
   # Private cluster
   enable_private_nodes    = true
