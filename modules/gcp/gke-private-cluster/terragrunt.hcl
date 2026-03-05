@@ -4,8 +4,8 @@ terraform {
 
 # Default inputs — override from individual GKE cluster terragrunt.hcl
 inputs = {
-  enable_private_nodes    = true
-  enable_private_endpoint = false
+  enable_private_nodes     = true
+  enable_private_endpoint  = false
   remove_default_node_pool = true
   initial_node_count       = 0
   release_channel          = "REGULAR"
