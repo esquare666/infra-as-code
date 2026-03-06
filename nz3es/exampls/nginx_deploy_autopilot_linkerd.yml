@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-autopilot-linkerd
+  annotations:
+    linkerd.io/inject: enabled
+    config.alpha.linkerd.io/proxy-enable-native-sidecar: "true"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector: # This is not required if the label has added to namespace level
+        cloud.google.com/compute-class: "autopilot"
