@@ -1,5 +1,5 @@
 terraform {
-  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/workload-identity?version=43.0.0"
+  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/workload-identity?version=44.0.0"
 }
 
 # Default inputs — override from individual workload-identity terragrunt.hcl

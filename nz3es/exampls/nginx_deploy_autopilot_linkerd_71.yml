@@ -1,0 +1,2492 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-autopilot-linkerd
+  annotations:
+    linkerd.io/inject: enabled
+    config.alpha.linkerd.io/proxy-enable-native-sidecar: "true"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-1
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-1
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-2
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-2
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-3
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-3
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-3
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-4
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-4
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-4
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-5
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-5
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-5
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-6
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-6
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-6
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-7
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-7
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-7
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-8
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-8
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-8
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-9
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-9
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-9
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-10
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-10
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-10
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-11
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-11
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-11
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-12
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-12
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-12
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-13
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-13
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-13
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-14
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-14
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-14
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-15
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-15
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-15
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-16
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-16
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-16
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-17
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-17
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-17
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-18
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-18
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-18
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-19
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-19
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-19
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-20
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-20
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-20
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-21
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-21
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-21
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-22
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-22
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-22
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-23
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-23
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-23
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-24
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-24
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-24
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-25
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-25
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-25
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-26
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-26
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-26
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-27
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-27
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-27
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-28
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-28
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-28
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-29
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-29
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-29
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-30
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-30
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-30
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-31
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-31
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-31
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-32
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-32
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-32
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-33
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-33
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-33
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-34
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-34
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-34
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-35
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-35
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-35
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-36
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-36
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-36
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-37
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-37
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-37
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-38
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-38
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-38
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-39
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-39
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-39
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-40
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-40
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-40
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-41
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-41
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-41
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-42
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-42
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-42
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-43
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-43
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-43
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-44
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-44
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-44
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-45
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-45
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-45
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-46
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-46
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-46
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-47
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-47
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-47
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-48
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-48
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-48
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-49
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-49
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-49
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-50
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-50
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-50
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-51
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-51
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-51
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-52
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-52
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-52
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-53
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-53
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-53
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-54
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-54
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-54
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-55
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-55
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-55
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-56
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-56
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-56
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-57
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-57
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-57
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-58
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-58
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-58
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-59
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-59
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-59
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-60
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-60
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-60
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-61
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-61
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-61
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-62
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-62
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-62
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-63
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-63
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-63
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-64
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-64
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-64
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-65
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-65
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-65
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-66
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-66
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-66
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-67
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-67
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-67
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-68
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-68
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-68
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-69
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-69
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-69
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-70
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-70
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-70
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-autopilot-71
+  namespace: nginx-autopilot-linkerd
+spec:
+  selector:
+    matchLabels:
+      app: nginx-autopilot-71
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-autopilot-71
+      annotations:
+        config.linkerd.io/proxy-cpu-request: "10m"
+        config.linkerd.io/proxy-memory-request: "32Mi"
+        config.linkerd.io/proxy-cpu-limit: "100m"
+        config.linkerd.io/proxy-memory-limit: "250Mi"
+    spec:
+      containers:
+        - name: nginx-autopilot
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      nodeSelector:
+        cloud.google.com/compute-class: "autopilot"

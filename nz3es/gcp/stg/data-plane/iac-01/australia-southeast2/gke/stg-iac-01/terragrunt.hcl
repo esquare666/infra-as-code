@@ -7,9 +7,9 @@ include "gke" {
   path = "${get_repo_root()}/modules/gcp/gke-private-cluster/terragrunt.hcl"
 }
 
-include "patch_compute_class" {
-  path = "${get_repo_root()}/modules/gcp/gke-private-cluster/features/patch_compute_class.hcl"
-}
+# include "patch_compute_class" {
+#   path = "${get_repo_root()}/modules/gcp/gke-private-cluster/features/patch_compute_class.hcl"
+# }
 
 include "allow_net_admin" {
   path = "${get_repo_root()}/modules/gcp/gke-private-cluster/features/allow_net_admin.hcl"
