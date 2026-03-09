@@ -1,5 +1,5 @@
 terraform {
-  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/private-cluster?version=43.0.0"
+  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/private-cluster?version=44.0.0"
 }
 
 # Default inputs — override from individual GKE cluster terragrunt.hcl
